@@ -16,7 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link rel="stylesheet" href="https://use.typekit.net/qep5cnf.css" />
+      </head>
+      <body style={{margin: 0}} className={inter.className}>{children}</body>
     </html>
   );
 }
