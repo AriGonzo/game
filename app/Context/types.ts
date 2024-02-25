@@ -1,4 +1,12 @@
-import { ReactNode } from "react"
+import { Dispatch, ReactNode, SetStateAction } from "react"
+
+export enum PlayableGames {
+    BINARY_EYES = "binary",
+    BLUR_GAME = 'blurGame',
+    DECADE_DASH = 'decadeDash',
+    SAY_WHAAT = 'sayWhaat',
+    KIMBERLOOK = 'kimberLook'
+}
 
 export enum Games {
     WHEEL = 'wheel',
@@ -14,8 +22,11 @@ export type GameMapType = {
 }
 
 export type GameContextType = {
-    activeGame: Games | null,
-    spinTheWheel: () => void
+    activeGame: PlayableGames | null,
+    activeGameConfig: GameConfigType | null;
+    spinTheWheel: () => void;
+    endTheRound: () => void;
+    setActiveGame: Dispatch<SetStateAction<PlayableGames | null>>;
 }
 
 export type ContextProviderProps = {
@@ -24,8 +35,9 @@ export type ContextProviderProps = {
 
 export type GameConfigType = {
     title: string;
-    rules: string[];
-    closingLine: string;
-    questions: any[];
+    id: Games,
     component: ()=> JSX.Element;
+    rules?: string[];
+    closingLine?: string;
+    questions?: any[];
 }

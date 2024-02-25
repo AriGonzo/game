@@ -1,4 +1,4 @@
-import { GameConfigType } from "../Context/types";
+import { GameConfigType, Games } from "../Context/types";
 import TextGame from "../TextGames";
 
 export const sayWhaaatQuestions = [{
@@ -7,6 +7,7 @@ export const sayWhaaatQuestions = [{
 
 export const sayWhaaatConfig: GameConfigType = {
     title: "Say Whaaat?!",
+    id: Games.SAY_WHAAT,
     component: TextGame,
     rules: [],
     closingLine: "",

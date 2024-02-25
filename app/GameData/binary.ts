@@ -1,4 +1,4 @@
-import { GameConfigType } from "../Context/types";
+import { GameConfigType, Games } from "../Context/types";
 import PictureGame from "../PictureGames";
 
 export const binaryEyesQuestions = [
@@ -22,6 +22,7 @@ export const binaryEyesQuestions = [
 
 export const binaryEyesConfig: GameConfigType = {
     title: 'Through my Binary Eyes',
+    id: Games.BINARY_EYES,
     component: PictureGame,
     rules: [
         "Listen to a digital pal's unique take on a picture from Kimberly's life.",

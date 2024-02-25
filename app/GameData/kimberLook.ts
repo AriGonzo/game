@@ -1,4 +1,4 @@
-import { GameConfigType } from "../Context/types";
+import { GameConfigType, Games } from "../Context/types";
 import PictureGame from "../PictureGames";
 
 export const kimberLookQuestions = [{
@@ -7,6 +7,7 @@ export const kimberLookQuestions = [{
 
 export const kimberLookConfig: GameConfigType = {
     title: "KimberLook 👀",
+    id: Games.KIMBERLOOK,
     component: PictureGame,
     rules: [],
     closingLine: "",

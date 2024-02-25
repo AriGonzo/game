@@ -1,7 +1,8 @@
 "use client"
 
-import { ReactNode, createContext, useMemo, useState } from 'react';
-import { GameMapType, Games, GameContextType, ContextProviderProps } from './types';
+import { createContext, useEffect, useMemo, useState } from 'react';
+import { GameMapType, Games, GameContextType, ContextProviderProps, PlayableGames, GameConfigType } from './types';
+import {sample} from 'lodash';
 
 
 // Game Configs
@@ -10,35 +11,65 @@ import { blurGameConfig } from '../GameData/blurGame';
 import { decadeDashConfig } from '../GameData/decadeDash';
 import { sayWhaaatConfig } from '../GameData/sayWhaat';
 import { kimberLookConfig } from '../GameData/kimberLook';
-import { wheelConfig } from '../GameData/wheel';
 
 // Game Map
 export const GameMap: GameMapType = {
-    [Games.BINARY_EYES]: binaryEyesConfig,
-    [Games.BLUR_GAME]: blurGameConfig,
-    [Games.DECADE_DASH]: decadeDashConfig,
-    [Games.SAY_WHAAT]: sayWhaaatConfig,
-    [Games.KIMBERLOOK]: kimberLookConfig
+    [PlayableGames.BINARY_EYES]: binaryEyesConfig,
+    [PlayableGames.BLUR_GAME]: blurGameConfig,
+    [PlayableGames.DECADE_DASH]: decadeDashConfig,
+    [PlayableGames.SAY_WHAAT]: sayWhaaatConfig,
+    [PlayableGames.KIMBERLOOK]: kimberLookConfig
 };
 
 export const GameContext = createContext<GameContextType>({
-    activeGame: Games.WHEEL,
-    spinTheWheel: () => {}
+    activeGame: null,
+    activeGameConfig: null,
+    spinTheWheel: () => {},
+    endTheRound: () => {},
+    setActiveGame: () => {},
 });
 
 export const GameContextProvider = ({children}: ContextProviderProps) => {
-    const [activeGame, setActiveGame] = useState(null);
-    
-    function spinTheWheel() {
+    const [activeGame, setActiveGame] = useState<PlayableGames | null>(null);
+    const [activeGameConfig, setActiveGameConfig] = useState<GameConfigType | null>(null);
+    const [availableGames, setAvailableGames] = useState(Object.values(PlayableGames))
 
+    function spinTheWheel() {
+        // Start the animation to spin the wheel
+        // Randomly pick one of the Games
+        // with result, setActiveGame(result)
+        const newGame = sample(availableGames);
+        if (newGame) {
+            setActiveGame(newGame);
+        }
+    };
+
+    function endTheRound() {
+        console.log('ending the round');
+        // update the state to ensure we slice off any games that don't have any questions
+        setActiveGame(null);
     }
+
+    useEffect(()=> {
+        if (activeGame) {
+            setActiveGameConfig(GameMap[activeGame])
+        } else {
+            setActiveGameConfig(null);
+        }
+    }, [activeGame])
 
     const GameState = useMemo(()=>({
         activeGame,
-        spinTheWheel
+        spinTheWheel,
+        activeGameConfig,
+        endTheRound,
+        setActiveGame
     }), [
         activeGame,
-        spinTheWheel
+        spinTheWheel,
+        activeGameConfig,
+        endTheRound,
+        setActiveGame
     ])
 
     return (
