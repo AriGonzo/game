@@ -1,7 +1,7 @@
 import { PlayableGames } from "../Context/types";
 
 export type WheelItem = {
-    label: string;
+    label?: string;
     value?: PlayableGames;
 }
 

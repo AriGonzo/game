@@ -15,7 +15,7 @@ const gradientAnimation = keyframes`
     }
 `
 
-const gradients = {
+export const gradients = {
     oceanBlue: 'linear-gradient(90deg, #2E3192, #1BFFFF)',
     purpleLake: 'linear-gradient(75deg, #662D8C, #ED1E79)',
     greenBeach: 'linear-gradient(75deg, #02AABD , #00CDAC)',
