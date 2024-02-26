@@ -28,7 +28,7 @@ export const BGWrapper = styled(animated.div)`
     position: absolute;
     top: 0; bottom: 0;
     left: 0; right: 0;
-    background: ${gradients.sweetMorning};
+    background: ${gradients.oceanBlue};
     background-size: 400% 400%;
     display: flex;
     align-items: center;

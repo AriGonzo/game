@@ -4,6 +4,12 @@ import { createContext, useEffect, useMemo, useState } from 'react';
 import { GameMapType, Games, GameContextType, ContextProviderProps, PlayableGames, GameConfigType } from './types';
 import {sample} from 'lodash';
 
+import io from 'socket.io-client';
+const socket = io('http://192.168.5.58:3001');
+
+const audioLaughter = new Audio("/audio/laughTrack.mp4");
+
+
 
 // Game Configs
 import { binaryEyesConfig } from '../GameData/binary';
@@ -63,7 +69,19 @@ export const GameContextProvider = ({children}: ContextProviderProps) => {
         } else {
             setActiveGameConfig(null);
         }
-    }, [activeGame])
+    }, [activeGame]);
+
+    useEffect(() => {
+        // Listen for incoming messages
+        socket.on('end the round', () => {
+            console.log('got the message')
+            endTheRound();
+        });
+
+        socket.on('laugh track', () => {
+            audioLaughter.play();
+        });
+      }, []);
 
     const GameState = useMemo(()=>({
         activeGame,

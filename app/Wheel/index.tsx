@@ -6,6 +6,9 @@ import { WheelType } from "./types";
 import { sample } from "lodash";
 import * as easing from 'easing-utils';
 import { PlayableGames } from "../Context/types";
+import io from 'socket.io-client';
+
+const socket = io('http://192.168.5.58:3001'); // Replace with your server URL
 
 function getBGImageScale(id: PlayableGames): {backgroundColor?: string, image: string, imageScale: number, imageRadius: number} {
     switch (id) {
@@ -51,28 +54,29 @@ function getBGImageScale(id: PlayableGames): {backgroundColor?: string, image: s
 
 const WheelScreen = () => {
     const { availableGames, getFriendlyName, setActiveGame } = useContext(GameContext);
-    const [wheelUI, setWheelUI] = useState<{
-        spinToItem: (
-            idx: number,
-            duration: number,
-            spinToCenter: boolean,
-            numberOfRevolutions: number,
-            direction: number,
-            easingFunction: (t: number) => void
-            ) => void
-    }>();
+    let wheelUI;
     const ref = useRef(null);
     
     const spinTheWheel = () => {
         const newGame = sample(availableGames);
+        console.log('new game?', {availableGames, newGame, wheelUI})
         if (newGame) {
             const idx = availableGames.indexOf(newGame);
             wheelUI?.spinToItem(idx, 4000, true, 2, 1, easing.easeOutCubic)
             setTimeout(() => {
                 setActiveGame(newGame)
-            }, 7000)
+            }, 6000)
         }
     }
+
+    useEffect(() => {
+        // Listen for incoming messages
+        socket.on('chat message', (message) => {
+            console.log('fired websocket');
+            console.log(wheelUI)
+            spinTheWheel();
+        });
+      }, []);
 
     useEffect(() => {
         if (!wheelUI) {
@@ -91,7 +95,7 @@ const WheelScreen = () => {
                 itemBackgroundColors: ['#C33764', '#11998E', '#02AABD'],
 
             }
-            setWheelUI(new Wheel(ref.current, props))
+            wheelUI = new Wheel(ref.current, props);
         }
     }, [ref.current]);
     
