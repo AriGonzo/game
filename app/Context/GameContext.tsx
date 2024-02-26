@@ -27,6 +27,8 @@ export const GameContext = createContext<GameContextType>({
     spinTheWheel: () => {},
     endTheRound: () => {},
     setActiveGame: () => {},
+    availableGames: [],
+    getFriendlyName: (id: PlayableGames) => ""
 });
 
 export const GameContextProvider = ({children}: ContextProviderProps) => {
@@ -34,13 +36,14 @@ export const GameContextProvider = ({children}: ContextProviderProps) => {
     const [activeGameConfig, setActiveGameConfig] = useState<GameConfigType | null>(null);
     const [availableGames, setAvailableGames] = useState(Object.values(PlayableGames))
 
-    function spinTheWheel() {
-        // Start the animation to spin the wheel
-        // Randomly pick one of the Games
-        // with result, setActiveGame(result)
+    function spinTheWheel(wheelUI: any) {
         const newGame = sample(availableGames);
         if (newGame) {
-            setActiveGame(newGame);
+            console.log({newGame, availableGames})
+            const idx = availableGames.indexOf(newGame);
+            console.log(idx)
+            wheelUI.spinTo(idx, 4000, true, 2, 1)
+            // setActiveGame(newGame);
         }
     };
 
@@ -48,6 +51,10 @@ export const GameContextProvider = ({children}: ContextProviderProps) => {
         console.log('ending the round');
         // update the state to ensure we slice off any games that don't have any questions
         setActiveGame(null);
+    }
+
+    function getFriendlyName(id: PlayableGames) {
+        return GameMap[id].title   
     }
 
     useEffect(()=> {
@@ -63,13 +70,17 @@ export const GameContextProvider = ({children}: ContextProviderProps) => {
         spinTheWheel,
         activeGameConfig,
         endTheRound,
-        setActiveGame
+        setActiveGame,
+        availableGames,
+        getFriendlyName
     }), [
         activeGame,
         spinTheWheel,
         activeGameConfig,
         endTheRound,
-        setActiveGame
+        setActiveGame,
+        availableGames,
+        getFriendlyName
     ])
 
     return (

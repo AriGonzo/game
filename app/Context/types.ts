@@ -24,9 +24,11 @@ export type GameMapType = {
 export type GameContextType = {
     activeGame: PlayableGames | null,
     activeGameConfig: GameConfigType | null;
-    spinTheWheel: () => void;
+    spinTheWheel: (wheelUI: any) => void;
     endTheRound: () => void;
     setActiveGame: Dispatch<SetStateAction<PlayableGames | null>>;
+    availableGames: PlayableGames[];
+    getFriendlyName: (id: PlayableGames) => string;
 }
 
 export type ContextProviderProps = {

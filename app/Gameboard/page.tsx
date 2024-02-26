@@ -9,20 +9,17 @@ import { wheelConfig } from "../GameData/wheel";
 
 function Gameboard_Inner() {
     const { activeGameConfig } = useContext(GameContext);
-    const ActiveGame = activeGameConfig ? activeGameConfig.component : false;
+    const ActiveGame = activeGameConfig ? activeGameConfig.component : wheelConfig.component;
     
     return (
         <BGWrapper>
-            {ActiveGame ? (<ActiveGame />) : (<wheelConfig.component />)}
-            
+            <ActiveGame />
         </BGWrapper>
     )
 }
 
 export default function Gameboard() {
-    
     return (
-        
             <GameContextProvider>
                 <Gameboard_Inner />
             </GameContextProvider>
