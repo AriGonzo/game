@@ -1,4 +1,4 @@
-import { GameConfigType, Games } from "../Context/types"
+import { GameConfigType, Games } from "../GameContext/types"
 import Wheel from "../Wheel"
 
 export const wheelConfig: GameConfigType = {

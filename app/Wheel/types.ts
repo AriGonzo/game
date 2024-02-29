@@ -1,4 +1,4 @@
-import { PlayableGames } from "../Context/types";
+import { PlayableGames } from "../GameContext/types";
 
 export type WheelItem = {
     label?: string;
@@ -10,4 +10,9 @@ export type WheelType = {
     isInteractive: boolean;
     pointerAngle: number;
     itemLabelBaselineOffset: number;
+    itemLabelFont: string;
+    itemLabelFontSizeMax: number;
+    itemLabelRadius: number;
+    itemLabelRadiusMax: number;
+    itemBackgroundColors: string[];
 }

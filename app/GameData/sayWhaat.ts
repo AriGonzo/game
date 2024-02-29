@@ -1,4 +1,4 @@
-import { GameConfigType, Games } from "../Context/types";
+import { GameConfigType, Games } from "../GameContext/types";
 import TextGame from "../TextGames";
 
 export const sayWhaaatQuestions = [{

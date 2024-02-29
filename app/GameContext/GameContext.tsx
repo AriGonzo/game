@@ -7,7 +7,7 @@ import {sample} from 'lodash';
 import io from 'socket.io-client';
 const socket = io('http://192.168.5.58:3001');
 
-const audioLaughter = new Audio("/audio/laughTrack.mp4");
+
 
 
 
@@ -34,13 +34,18 @@ export const GameContext = createContext<GameContextType>({
     endTheRound: () => {},
     setActiveGame: () => {},
     availableGames: [],
+    showInstructions: false,
     getFriendlyName: (id: PlayableGames) => ""
 });
 
 export const GameContextProvider = ({children}: ContextProviderProps) => {
     const [activeGame, setActiveGame] = useState<PlayableGames | null>(null);
     const [activeGameConfig, setActiveGameConfig] = useState<GameConfigType | null>(null);
+    const [showInstructions, setShowInstructions] = useState(false);
     const [availableGames, setAvailableGames] = useState(Object.values(PlayableGames))
+    
+
+    let laughterAudio: HTMLAudioElement;
 
     function spinTheWheel(wheelUI: any) {
         const newGame = sample(availableGames);
@@ -72,14 +77,21 @@ export const GameContextProvider = ({children}: ContextProviderProps) => {
     }, [activeGame]);
 
     useEffect(() => {
+        laughterAudio = new Audio("/audio/laughTrack.mp4");
+    }, []);
+
+    useEffect(() => {
         // Listen for incoming messages
         socket.on('end the round', () => {
-            console.log('got the message')
             endTheRound();
         });
 
         socket.on('laugh track', () => {
-            audioLaughter.play();
+            if (laughterAudio) laughterAudio.play();
+        });
+
+        socket.on('toggle instructions', ()=> {
+            setShowInstructions(!showInstructions)
         });
       }, []);
 
@@ -90,7 +102,8 @@ export const GameContextProvider = ({children}: ContextProviderProps) => {
         endTheRound,
         setActiveGame,
         availableGames,
-        getFriendlyName
+        getFriendlyName,
+        showInstructions
     }), [
         activeGame,
         spinTheWheel,
@@ -98,7 +111,8 @@ export const GameContextProvider = ({children}: ContextProviderProps) => {
         endTheRound,
         setActiveGame,
         availableGames,
-        getFriendlyName
+        getFriendlyName,
+        showInstructions
     ])
 
     return (

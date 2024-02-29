@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext } from "react";
-import { GameContext, GameContextProvider } from "./Context/GameContext";
+import { GameContext, GameContextProvider } from "./GameContext/GameContext";
 import Gameboard from "./Gameboard/page";
 import { GambadoScotchForte } from "./Gameboard/styles";
 import Link from "next/link";

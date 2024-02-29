@@ -1,11 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react"
-import { GameContext } from "../Context/GameContext"
+import { GameContext } from "../GameContext/GameContext"
 import { Wheel } from 'spin-wheel';
 import { Pointer, WheelContainer, WheelWrapper } from './styles';
 import { WheelType } from "./types";
 import { sample } from "lodash";
 import * as easing from 'easing-utils';
-import { PlayableGames } from "../Context/types";
+import { PlayableGames } from "../GameContext/types";
 import io from 'socket.io-client';
 
 const socket = io('http://192.168.5.58:3001'); // Replace with your server URL
@@ -53,13 +53,22 @@ function getBGImageScale(id: PlayableGames): {backgroundColor?: string, image: s
 }
 
 const WheelScreen = () => {
-    const { availableGames, getFriendlyName, setActiveGame } = useContext(GameContext);
-    let wheelUI;
+    const { availableGames, setActiveGame } = useContext(GameContext);
+    let wheelUI: {
+        spinToItem: (
+            index: number,
+            duration: number,
+            centerRotation: boolean,
+            numberOfRevolutions: number,
+            direction: number,
+            easingFunction: (t: number) => void
+        )=> void
+    };
     const ref = useRef(null);
     
     const spinTheWheel = () => {
         const newGame = sample(availableGames);
-        console.log('new game?', {availableGames, newGame, wheelUI})
+        
         if (newGame) {
             const idx = availableGames.indexOf(newGame);
             wheelUI?.spinToItem(idx, 4000, true, 2, 1, easing.easeOutCubic)
@@ -72,8 +81,6 @@ const WheelScreen = () => {
     useEffect(() => {
         // Listen for incoming messages
         socket.on('chat message', (message) => {
-            console.log('fired websocket');
-            console.log(wheelUI)
             spinTheWheel();
         });
       }, []);
@@ -100,7 +107,7 @@ const WheelScreen = () => {
     }, [ref.current]);
     
     return (
-        <WheelWrapper onClick={spinTheWheel}>            
+        <WheelWrapper>            
             <WheelContainer id="wheel" ref={ref}>
                 <Pointer />
             </WheelContainer>

@@ -29,6 +29,7 @@ export type GameContextType = {
     setActiveGame: Dispatch<SetStateAction<PlayableGames | null>>;
     availableGames: PlayableGames[];
     getFriendlyName: (id: PlayableGames) => string;
+    showInstructions: boolean;
 }
 
 export type ContextProviderProps = {

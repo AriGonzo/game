@@ -1,7 +1,7 @@
 "use client"
 
 import { useContext } from "react";
-import { GameContext, GameContextProvider } from "../Context/GameContext";
+import { GameContext, GameContextProvider } from "../GameContext/GameContext";
 import {
     BGWrapper,
 } from './styles'
